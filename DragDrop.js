@@ -1,4 +1,4 @@
-window.DragDrop = function(){
+window.DragDrop = function() {
 
   var dragDrop = new EventTarget(), // 自定义事件
       dragSizing = null, // 拖拽改变大小对象
@@ -11,7 +11,7 @@ window.DragDrop = function(){
       draggingLeft = 0, // 当前拖拽对象的left
       draggingTop = 0; // 当前拖拽对象的Top
 
-  var handleEvent = function(event){
+  var handleEvent = function(event) {
     event = EventUnit.getEvent(event); // 获取事件
     var target = EventUnit.getTarget(event); // 获取事件对象
     switch (event.type) {
@@ -37,7 +37,7 @@ window.DragDrop = function(){
             dragDrop.fire({ type:"dragstart", target:dragging, x:event.clientX, y:event.clientY });
             return;
           }
-          if( target.className.indexOf("dragsizeable") > -1 ){
+          if( target.className.indexOf("dragsizeable") > -1 ) {
             EventUnit.preventDefault(event); // 阻止默认行为
             EventUnit.stopPropagation(event); // 阻止冒泡
             dragSizing = target; // 设置当前拖拽大小对象为当前拖拽对象
@@ -49,7 +49,7 @@ window.DragDrop = function(){
           }
         break;
       case "mousemove":
-          if( dragging != null ){
+          if( dragging != null ) {
             EventUnit.preventDefault(event); // 阻止默认行为
             EventUnit.stopPropagation(event); // 阻止冒泡
             draggingLeft =  (event.clientX - diffX-10) + "px";
@@ -90,7 +90,7 @@ window.DragDrop = function(){
             draggingTop = 0;
             return;
           }
-          if( dragSizing != null ){
+          if( dragSizing != null ) {
             dragDrop.fire({ type:"dragsizeend", target:dragSizing });
             dragSizing = null;
             dragSizeParent = null;
@@ -103,13 +103,13 @@ window.DragDrop = function(){
     }
   }
 
-  dragDrop.enable = function(){
+  dragDrop.enable = function() {
     EventUnit.addHandler(document, "mousedown", handleEvent);
     EventUnit.addHandler(document, "mousemove", handleEvent);
     EventUnit.addHandler(document, "mouseup", handleEvent);
   }
 
-  dragDrop.disable = function(){
+  dragDrop.disable = function() {
     EventUnit.removeHandler(document, "mousedown", handleEvent);
     EventUnit.removeHandler(document, "mousemove", handleEvent);
     EventUnit.removeHandler(document, "mouseup", handleEvent);

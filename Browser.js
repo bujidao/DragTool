@@ -1,4 +1,4 @@
-(function(w){
+(function(w) {
 
   var userAgent = navigator.userAgent,
       rMsie = /(msie\s|trident.*rv:)([\w.]+)/,
@@ -10,7 +10,7 @@
   var version;
   var ua = userAgent.toLowerCase();
 
-  var uaMatch = function(ua){
+  var uaMatch = function(ua) {
     var match = rMsie.exec(ua);
     if( match != null ) {
       return { browser : "IE", version : match[2] || "0" };
@@ -39,7 +39,7 @@
   var browserMatch = uaMatch(ua);
   var browserDic = {};
   
-  if ( browserMatch.browser ){
+  if ( browserMatch.browser ) {
     browserDic["browser"] = browserMatch.browser;
     browserDic["version"] = browserMatch.version;
   } else {

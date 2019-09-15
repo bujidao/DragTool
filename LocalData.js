@@ -16,7 +16,7 @@ window.LocalData = {
   },
 
   setValue: function(cookieName, cookieValue, cookieExpires, cookiePath) {
-    if( !!window.localStorage ){
+    if( !!window.localStorage ) {
       window.localStorage.setItem(cookieName, cookieValue)
     }else{
       var d = new Date();
@@ -27,7 +27,7 @@ window.LocalData = {
   },
 
   removeValue: function(cookieName) {
-    if( !!window.localStorage ){
+    if( !!window.localStorage ) {
       window.localStorage.removeItem(cookieName)
     } else {
       var cval = getCkVal(cookieName);

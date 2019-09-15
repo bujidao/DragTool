@@ -1,14 +1,14 @@
-window.$$ = window.DragTool = (function(){
+window.$$ = window.DragTool = (function() {
 
-  var DragTool = function(selector){
+  var DragTool = function(selector) {
     return new DragTool.prototype.init(selector);
   }
 
   DragTool.prototype = {
     constructor: DragTool,
-    init: function(selector){
+    init: function(selector) {
       var dragArea = document.getElementById(selector)
-      if(!dragArea){ console.log("不存在的对象"); return; }
+      if(!dragArea) { console.log("不存在的对象"); return; }
       this.dragArea = dragArea;
       return this;
     }
@@ -17,8 +17,8 @@ window.$$ = window.DragTool = (function(){
   DragTool.prototype.init.prototype = DragTool.prototype;
 
   // 初始化拖拽信息
-  DragTool.prototype.initDrag = function(options){
-    if( !options.dragItemClass || !options.dragPlaceholderID ){
+  DragTool.prototype.initDrag = function(options) {
+    if( !options.dragItemClass || !options.dragPlaceholderID ) {
       return;
     }
     this.dragItem = options.dragItemClass; // 可拖拽矩形类名
@@ -34,7 +34,7 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 创建占位符
-  DragTool.prototype.placeholderCreate = function(target){
+  DragTool.prototype.placeholderCreate = function(target) {
     var parentNode = target.parentNode; // 当前元素的父元素
     var nextNode = DomUnit.getNextNode(target); // 当前元素的后一个元素
     this.placeholderEle = document.createElement("span"); // 创建占位符
@@ -57,17 +57,17 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 将当前占位符移动到指定target前面
-  DragTool.prototype.putPlaceholderBeforeTarget = function(target){
+  DragTool.prototype.putPlaceholderBeforeTarget = function(target) {
     var _this = this;
     if( !!target == false ) { return; }
-    if( !!this.placeholderEle ){
+    if( !!this.placeholderEle ) {
       DomUnit.setEleBeforeTarget(this.placeholderEle, target, this.placeholderEle, 1);
       this.putEleForTargetInElesList(this.placeholderID, target.getAttribute("id"), 0);
     }
   }
 
   // 将当前占位符移动到指定target后面,理论上插入在target前面只要调用insertBefore(ele,target.nextNode),调用本方法的前提是target是最后一个元素,而target.nextNode并不存在
-  DragTool.prototype.putPlaceholderAfterTarget = function(target){
+  DragTool.prototype.putPlaceholderAfterTarget = function(target) {
     if( !!target == false || !!this.placeholderEle == false ) { return; }
     var targetNextNode = DomUnit.getNextNode(target, this.currentDragID);
     if( !!targetNextNode ) {
@@ -81,8 +81,8 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 结束拖拽,将拖动对象移动到当前节点标志位节点前面,并删除拖拽占位符
-  DragTool.prototype.endDrag = function(){
-    if( !!this.placeholderEle == false ){
+  DragTool.prototype.endDrag = function() {
+    if( !!this.placeholderEle == false ) {
       return;
     }
     this.putEleBeforeTargetInElesListAndDelTarget(this.currentDragID, this.placeholderID);
@@ -93,22 +93,22 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 初始化可拖拽对象ID数组
-  DragTool.prototype.dragEleIDListInit = function(){
-    if( !!this.dragArea == false ){
+  DragTool.prototype.dragEleIDListInit = function() {
+    if( !!this.dragArea == false ) {
       console.log("无操作区域")
       return;
     }
     this.draggableIDList = [];
     var elements = this.dragArea.getElementsByClassName(this.dragItem);
     var len = elements.length;
-    for( var i = 0; i < len; i++ ){
+    for( var i = 0; i < len; i++ ) {
       var item = elements[i];
       this.draggableIDList.push(item.getAttribute("id"));
     }
   }
 
   // 判断a是否在b前面(draggableIDList操作)
-  DragTool.prototype.isBeforeTargetInElesList = function(a, b){
+  DragTool.prototype.isBeforeTargetInElesList = function(a, b) {
     var before = true;
     var aIndex = this.draggableIDList.indexOf(a);
     var bIndex = this.draggableIDList.indexOf(b);
@@ -117,17 +117,17 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 将a插入在b前面或者后面,type 0前面,1后面(draggableIDList操作)
-  DragTool.prototype.putEleForTargetInElesList = function(a, b, type){
+  DragTool.prototype.putEleForTargetInElesList = function(a, b, type) {
     var aIndex = this.draggableIDList.indexOf(a);
     var bIndex = this.draggableIDList.indexOf(b);
-    if(bIndex == -1){
+    if(bIndex == -1) {
       return;
     }
     this.removeEleFromElesList(a);
-    if( aIndex != -1 && aIndex < bIndex ){
+    if( aIndex != -1 && aIndex < bIndex ) {
       bIndex = bIndex - 1;
     }
-    if( type == 0 ){
+    if( type == 0 ) {
       this.draggableIDList.splice(bIndex, 0, a);
     } else {
       this.draggableIDList.splice((bIndex+1), 0, a);
@@ -135,9 +135,9 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 将a插入在b前面,并删除b
-  DragTool.prototype.putEleBeforeTargetInElesListAndDelTarget = function(a, b){
+  DragTool.prototype.putEleBeforeTargetInElesListAndDelTarget = function(a, b) {
     var bIndex = this.draggableIDList.indexOf(b);
-    if(bIndex == -1){
+    if(bIndex == -1) {
       return;
     }
     this.draggableIDList.splice(bIndex, 0, a);
@@ -145,25 +145,25 @@ window.$$ = window.DragTool = (function(){
   }
 
   // 从数组中删除a元素(draggableIDList操作)
-  DragTool.prototype.removeEleFromElesList = function(a){
+  DragTool.prototype.removeEleFromElesList = function(a) {
     var aIndex = this.draggableIDList.indexOf(a);
-    if( aIndex != -1 ){
+    if( aIndex != -1 ) {
       this.draggableIDList.splice(aIndex, 1);
     }
   }
 
   // 初始化拖拽事件
-  DragTool.prototype.initDragEvent = function(){
+  DragTool.prototype.initDragEvent = function() {
     var _this = this;
-    DragDrop.addHandler("dragstart", function(event){
+    DragDrop.addHandler("dragstart", function(event) {
       if( DomUnit.isParent(_this.dragArea,event.target) == false ) { return; }
       _this.dragCout = 0;
       _this.placeholderCreate(event.target);
     });
-    DragDrop.addHandler("drag", function(event){
+    DragDrop.addHandler("drag", function(event) {
       if( DomUnit.isParent(_this.dragArea,event.target) == false ) { return; }
       _this.dragCout = _this.dragCout + 1;
-      if( _this.dragCout%5 != 0 ){ // 控制频率在每拖动5次触发一次检测
+      if( _this.dragCout%5 != 0 ) { // 控制频率在每拖动5次触发一次检测
         return;
       }
       var target = event.target;
@@ -177,12 +177,12 @@ window.$$ = window.DragTool = (function(){
         yr: target.offsetTop+target.clientHeight,
         area: target.clientWidth*target.clientHeight
       } // 获取当前拖拽的矩形信息
-      _this.rect.isHaveReplaceRect(currentDrapRect, function(rectID){
+      _this.rect.isHaveReplaceRect(currentDrapRect, function(rectID) {
         var target = document.getElementById(rectID);
         var isBeforeTarget = _this.isBeforeTargetInElesList(_this.placeholderID, rectID);
-        if( isBeforeTarget ){
+        if( isBeforeTarget ) {
           var targetNextNode = DomUnit.getNextNode(target, _this.currentDragID);
-          if( targetNextNode ){
+          if( targetNextNode ) {
             _this.putPlaceholderBeforeTarget(targetNextNode); // 如果存在下一个元素,只插入下一个元素的前面，就是变相的插入此元素的后面
           }else{
             _this.putPlaceholderAfterTarget(target); // 如果不存在下一个元素,说明是最后一个元素了,则直接插入在此元素的后面
@@ -194,13 +194,13 @@ window.$$ = window.DragTool = (function(){
         _this.rect.rectData()
       });
     });
-    DragDrop.addHandler("dragend", function(event){
+    DragDrop.addHandler("dragend", function(event) {
       if( DomUnit.isParent(_this.dragArea,event.target) == false ) { return; }
       _this.endDrag(); // 结束拖拽的后续处理
       _this.rect.rectData();
       _this.dragEleIDListInit(); // 这句话是在拖拽结束后,重新初始化可拖拽数组,加上这句可防止异常造成的意外情况,不过会增加额外的dom操作
     });
-    DragDrop.addHandler("dragsizeend", function(event){
+    DragDrop.addHandler("dragsizeend", function(event) {
       if( DomUnit.isParent(_this.dragArea,event.target) == false ) { return; }
       _this.rect.rectData();
     });

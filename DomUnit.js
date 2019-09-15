@@ -1,17 +1,17 @@
 window.DomUnit = {
 
-  cssText:function(ele, cssAttr){
+  cssText:function(ele, cssAttr) {
     var cssAttrList = cssAttr;
     var cssText = "";
     var cssList = ele.style.cssText.split(';');
     var len = cssList.length;
-    for( var i = 0; i < len; i++ ){
+    for( var i = 0; i < len; i++ ) {
       var item = cssList[i];
       if( !!item == false ) { continue; }
       var cssDic = item.split(':');
       var key = cssDic[0].trim();
       var value = cssDic[1].trim();
-      if( !!cssAttrList[key] == false ){
+      if( !!cssAttrList[key] == false ) {
         cssAttrList[key] = value;
       }
     }
@@ -22,14 +22,14 @@ window.DomUnit = {
     ele.style.cssText = cssText;
   },
 
-  getNextNode:function(target, abandonID){
+  getNextNode:function(target, abandonID) {
     var prevNode = null;
     var previousSibling = target.nextSibling;
-    if( !!previousSibling ){
-      if( previousSibling.nodeType != 1 ){
+    if( !!previousSibling ) {
+      if( previousSibling.nodeType != 1 ) {
         prevNode = this.getNextNode(previousSibling, abandonID);
       }else{
-        if( !!abandonID && previousSibling.getAttribute("id") == abandonID ){
+        if( !!abandonID && previousSibling.getAttribute("id") == abandonID ) {
           prevNode = this.getNextNode(previousSibling, abandonID);
         }else{
           prevNode = previousSibling;
@@ -39,19 +39,19 @@ window.DomUnit = {
     return prevNode;
   },
 
-  cloneCssAttr:function(ele, targetEle, cssList){
+  cloneCssAttr:function(ele, targetEle, cssList) {
     var cssAttr = window.getComputedStyle(ele, null);
     var borderWidth = parseInt(cssAttr["borderBottomWidth"]);
     var height = parseInt(cssAttr["height"]);
     var cssText = "",
         len = cssList.length,
         item = null;
-    for( var i = 0; i < len; i++ ){
+    for( var i = 0; i < len; i++ ) {
       item = cssList[i];
-      if( item.useCssAttr ){ // 直接使用cssList里面的值
+      if( item.useCssAttr ) { // 直接使用cssList里面的值
         cssText = cssText + item.cssName + ":" + item.cssAttr + ";";
       }else{
-        if( window.Browser.browser == "IE" && item.cssName == "height" && cssAttr["box-sizing"] == "border-box" && borderWidth > 0 ){
+        if( window.Browser.browser == "IE" && item.cssName == "height" && cssAttr["box-sizing"] == "border-box" && borderWidth > 0 ) {
           cssText = cssText + "height:"+(height+borderWidth*2)+"px;";
         }else{
           cssText = cssText + item.cssName + ":" + cssAttr[item.cssAttr] + ";";
@@ -61,22 +61,22 @@ window.DomUnit = {
     targetEle.style.cssText = cssText;
   },
 
-  isParent:function(parent, child){
-    if( child.parentNode == parent ){
+  isParent:function(parent, child) {
+    if( child.parentNode == parent ) {
       return true;
-    }else if( child.parentNode == document.body || !child.parentNode ){
+    }else if( child.parentNode == document.body || !child.parentNode ) {
       return false;
     }else{
       return this.isParent(parent, child.parentNode)
     }
   },
 
-  setEleBeforeTarget:function(ele, target, delEle, delSort){ // delSort 0先插入后删除, 1先删除后插入
+  setEleBeforeTarget:function(ele, target, delEle, delSort) { // delSort 0先插入后删除, 1先删除后插入
     try{
       var parentNode = target.parentNode;
-      if( !!parentNode == false ){ return; }
-      if( !!delEle ){
-        if( !!delSort ){
+      if( !!parentNode == false ) { return; }
+      if( !!delEle ) {
+        if( !!delSort ) {
           !!delEle.parentNode ? delEle.parentNode.removeChild(delEle) : ""; // 先删除之前的节点
           parentNode.insertBefore(ele, target); // 添加到指定元素之前
         } else {
@@ -86,22 +86,22 @@ window.DomUnit = {
       }else{
         parentNode.insertBefore(ele, target); // 添加到指定元素之前
       }
-    } catch (e){
+    } catch (e) {
       // 重新获取
       console.log("dom操作引起的异常");
     }
   },
 
-  resetDomFromLocol:function(dragArea){
+  resetDomFromLocol:function(dragArea) {
     var dragAreaDom = document.getElementById(dragArea);
-    if( !dragAreaDom ){ console.log("DOM不存在"); return; }
+    if( !dragAreaDom ) { console.log("DOM不存在"); return; }
     var sortdom = LocalData.getValue(dragArea);
-    if( !sortdom ){
+    if( !sortdom ) {
       return;
     }
     var domTree = JSON.parse(sortdom);
     var len = domTree.length;
-    for( var i = 0; i < len; i++ ){
+    for( var i = 0; i < len; i++ ) {
       var item = domTree[i];
       var node = document.getElementById(item.id);
       node.style.width = item.width;
@@ -110,10 +110,10 @@ window.DomUnit = {
     }
   },
 
-  saveDomToLocal:function(dragArea, dragItem){
+  saveDomToLocal:function(dragArea, dragItem) {
     var dragAreaDom = document.getElementById(dragArea);
     var nodes = dragAreaDom.getElementsByClassName(dragItem);
-    if( nodes.length == 0 ){ return; }
+    if( nodes.length == 0 ) { return; }
     var len = nodes.length,
         parentNode = nodes[0].parentNode,
         item = null,
@@ -123,7 +123,7 @@ window.DomUnit = {
         width = 0,
         documentWid = parentNode.clientWidth,
         domTree = [];
-    for( var i = 0; i < len; i++ ){
+    for( var i = 0; i < len; i++ ) {
       item = nodes[i];
       domNode = {};
       domNode["id"] = item.getAttribute("id");
