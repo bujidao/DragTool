@@ -23,7 +23,6 @@ body{
   box-sizing:border-box;
   border:1px solid #dddddd;
   display: inline-block !important;
-  float: left;
 }
 .draggable{
   position: absolute;
