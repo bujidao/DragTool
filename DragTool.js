@@ -29,7 +29,7 @@ window.$$ = window.DragTool = (function() {
     this.rect = new Rect(this.dragArea); // 创建矩形操作实例
     this.dragCout = 0; // 目的在于每一次拖拽都要触发检测方法,我们在这里控制频率
     this.draggableIDList = [];
-    this.dragEleIDListInit()； // 保存一份当前所有的可拖拽元素的ID,避免多次请求dom,造成的性能问题
+    this.dragEleIDListInit(); // 保存一份当前所有的可拖拽元素的ID,避免多次请求dom,造成的性能问题
     this.initDragEvent();
   }
 
